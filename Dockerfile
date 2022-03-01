@@ -2,17 +2,23 @@ FROM yubaoliu/dynaslam
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-#install opencv
+#uninstall opencv
 WORKDIR /root
-COPY install_opencv2.sh /root/
-COPY FindCUDA.cmake /root/
-RUN ./install_opencv2.sh
+RUN find / -name "*opencv*" -exec rm -i {} \;
 
-#download DynaSLAM
+#install opencv
+# graphcuts.cpp needed for 2.4.11
+WORKDIR /root
+COPY install_opencv24.sh /root/
+COPY FindCUDA.cmake /root/
+COPY graphcuts.cpp /root/    
+RUN ./install_opencv24.sh
+
+# #download DynaSLAM
 WORKDIR /home
 RUN apt-get update && \
     apt-get -y upgrade && \
-    apt-get install -y nano gawk git libcanberra-gtk-module libcanberra-gtk3-module \
+    apt-get install -y nano gawk git libcanberra-gtk-module libcanberra-gtk3-module libatlas3-base \
     libgtkglext1 libgtkglext1-dev && \
     git clone https://github.com/BertaBescos/DynaSLAM.git && \
     mv DynaSLAM /root
@@ -39,11 +45,11 @@ RUN head -n -4 CMakeLists.txt > temp.txt ; mv temp.txt CMakeLists.txt && \
     ln -s /usr/local/cuda-9.0/targets/x86_64-linux/lib/libcudart.so /usr/local/lib/libopencv_dep_cudart.so && \
     cd ../.. && \
     ./build.sh
-#awk '{sub(/2.4.11/,"2.4.9")}1'  CMakeLists.txt > temp.txt && mv temp.txt  CMakeLists.txt && \
 
 #download MaskRCNN
 WORKDIR /root/DynaSLAM/src/python
 RUN wget https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5
 
 WORKDIR /root/DynaSLAM
-RUN apt-get update
+RUN apt-get update  && \
+    export TF_CPP_MIN_LOG_LEVEL=2
