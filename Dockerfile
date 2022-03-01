@@ -15,13 +15,12 @@ COPY graphcuts.cpp /root/
 RUN ./install_opencv24.sh
 
 # #download DynaSLAM
-WORKDIR /home
+WORKDIR /root
 RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y nano gawk git libcanberra-gtk-module libcanberra-gtk3-module libatlas3-base \
     libgtkglext1 libgtkglext1-dev && \
-    git clone https://github.com/BertaBescos/DynaSLAM.git && \
-    mv DynaSLAM /root
+    git clone https://github.com/BertaBescos/DynaSLAM.git
 
 #Correcting CMakeLists.txt
 WORKDIR /root/DynaSLAM
