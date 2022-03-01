@@ -1,10 +1,12 @@
 # DynaSLAM Docker
 This application builds DynaSLAM algorithm in a docker container. <br/>
+It is required to have [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) installed. <br/> 
 DynaSLAM paper: https://arxiv.org/pdf/1806.05620.pdf <br/>
 DynaSLAM git repository: https://github.com/BertaBescos/DynaSLAM
+ 
 
 # Build the docker 
-Run the following command to build the docker. Building the docker can take a while, and at least 20GB from disk space.
+Run the following command to build the docker. Building the docker can take a while, and at least 15GB from disk space.
 ```
 mkdir Dataset
 sudo docker build -t dyna .
@@ -17,6 +19,12 @@ The following command will open a docker terminal
 ```
 # Access data from/to Docker
 To move files from/to the docker just move to the ```Dataset``` folder (for example, the SLAM sequence dataset)
+
+# Run DynaSLAM
+To run DynaSLAM a important note is to execute the terminal command at /root/DynaSLAM. Executions outside this folder will probably return Segmentation fault message. 
+```
+./Examples/RGB-D/rgbd_tum Vocabulary/ORBvoc.txt Examples/RGB-D/TUM3.yaml /home/Dataset/rgbd_dataset_freiburg3_walking_xyz/ Examples/RGB-D/associations/fr3_walking_xyz.txt src/python/mask_rcnn_coco.h5
+```
 
 # Exit the docker
 Inside the docker just type the following command, but the docker will still be activate when you leave:
