@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 #uninstall opencv
 WORKDIR /root
-RUN find / -name "*opencv*" -exec rm -i {} \;
+RUN find / -name "*opencv*" -exec rm -rf -i {} \;
 
 #install opencv
 # graphcuts.cpp needed for 2.4.11
