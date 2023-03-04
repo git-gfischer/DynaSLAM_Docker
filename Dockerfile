@@ -16,19 +16,19 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 ARG DEBIAN_FRONTEND=noninteractive
 
 #uninstall opencv
-WORKDIR /root
+WORKDIR /opt
 RUN find / -name "*opencv*" -exec rm -rf -i {} \;
 
 #install opencv
 # graphcuts.cpp needed for 2.4.11
-WORKDIR /root
-COPY install_opencv24.sh /root/
-COPY FindCUDA.cmake /root/
-COPY graphcuts.cpp /root/    
+WORKDIR /opt
+COPY install_opencv24.sh /opt/
+COPY FindCUDA.cmake /opt/
+COPY graphcuts.cpp /opt/    
 RUN ./install_opencv24.sh
 
 # #download DynaSLAM
-WORKDIR /root
+WORKDIR /opt
 RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y nano gawk git libcanberra-gtk-module libcanberra-gtk3-module libatlas3-base \
@@ -36,7 +36,7 @@ RUN apt-get update && \
     git clone https://github.com/BertaBescos/DynaSLAM.git
 
 #Correcting CMakeLists.txt
-WORKDIR /root/DynaSLAM
+WORKDIR /opt/DynaSLAM
 RUN head -n -4 CMakeLists.txt > temp.txt ; mv temp.txt CMakeLists.txt && \
     awk 'NR==86{print "/usr/local/lib/python2.7/dist-packages/numpy/core/include/numpy"}1' CMakeLists.txt > temp.txt && mv temp.txt CMakeLists.txt && \
     cd Thirdparty/DBoW2 && \
@@ -59,9 +59,9 @@ RUN head -n -4 CMakeLists.txt > temp.txt ; mv temp.txt CMakeLists.txt && \
     ./build.sh
 
 #download MaskRCNN
-WORKDIR /root/DynaSLAM/src/python
+WORKDIR /opt/DynaSLAM/src/python
 RUN wget https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5
 
-WORKDIR /root/DynaSLAM
+WORKDIR /opt/DynaSLAM
 RUN apt-get update  && \
     export TF_CPP_MIN_LOG_LEVEL=2

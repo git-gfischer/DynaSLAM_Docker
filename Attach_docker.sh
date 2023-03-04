@@ -1,3 +1,3 @@
 xhost + &&
-sudo nvidia-docker start dyna &&
-sudo nvidia-docker attach dyna 
+docker start dyna &&
+docker attach dyna 
