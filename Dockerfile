@@ -16,8 +16,8 @@ RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/machi
 ARG DEBIAN_FRONTEND=noninteractive
 
 #uninstall opencv
-WORKDIR /root
-RUN find / -name "*opencv*" -exec rm -rf -i {} \;
+#WORKDIR /
+#RUN find / -name "*opencv*" -exec rm -rf -i {} \;
 
 #install opencv
 # graphcuts.cpp needed for 2.4.11
@@ -57,6 +57,9 @@ RUN head -n -4 CMakeLists.txt > temp.txt ; mv temp.txt CMakeLists.txt && \
     ln -s /usr/local/cuda-9.0/targets/x86_64-linux/lib/libcudart.so /usr/local/lib/libopencv_dep_cudart.so && \
     cd ../.. && \
     ./build.sh
+
+WORKDIR /root/DynaSLAM/src/python
+RUN awk 'NR==8{print "matplotlib.use(\047Agg\047)"}1' MaskRCNN.py > temp.py && mv temp.py MaskRCNN.py
 
 #download MaskRCNN
 WORKDIR /root/DynaSLAM/src/python
