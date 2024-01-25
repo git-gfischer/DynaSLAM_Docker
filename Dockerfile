@@ -45,7 +45,6 @@ RUN head -n -4 CMakeLists.txt > temp.txt ; mv temp.txt CMakeLists.txt && \
     awk 'NR==8{print "find_package(Qt5Concurrent REQUIRED)"}1' CMakeLists.txt > temp.txt && mv temp.txt CMakeLists.txt && \
     awk 'NR==9{print "find_package(Qt5OpenGL REQUIRED)"}1' CMakeLists.txt > temp.txt && mv temp.txt CMakeLists.txt && \
     awk 'NR==10{print "find_package(Qt5Test REQUIRED)"}1' CMakeLists.txt > temp.txt && mv temp.txt CMakeLists.txt && \
-    awk 'NR==8{matplotlib.use("Agg")}1' src/python/MaskRCNN.py > src/python/temp.txt && mv src/python/temp.txt src/python/MaskRCNN.py && \
     ln -s /usr/local/cuda-9.0/targets/x86_64-linux/lib/libnppial.so /usr/local/lib/libopencv_dep_nppial.so && \
     ln -s /usr/local/cuda-9.0/targets/x86_64-linux/lib/libnppicc.so /usr/local/lib/libopencv_dep_nppicc.so && \
     ln -s /usr/local/cuda-9.0/targets/x86_64-linux/lib/libnppicom.so /usr/local/lib/libopencv_dep_nppicom.so && \
